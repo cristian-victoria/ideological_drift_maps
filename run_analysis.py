@@ -122,31 +122,42 @@ print("\n" + "=" * 70)
 print("OUTPUT FILES CREATED:")
 print("=" * 70)
 
-# List all output files
+# List all output files organized by category
 output_files = [
-    'Data Files:',
-    '  - extracted_manifestos.csv (from PDFs)',
-    '  - final_manifestos_dataset.csv (PDFs + CSVs combined)',
-    '  - preprocessed_manifestos.csv',
-    '  - decade_*.csv (up to 9 files)',
     '',
-    'Analysis Results:',
-    '  - semantic_drift_scores.csv',
-    '  - discovered_topics.csv',
-    '  - topic_evolution_by_decade.csv',
+    'DATA FILES:',
+    '  - extracted_manifestos.csv         (text from PDF manifestos)',
+    '  - extracted_manifestos.pkl         (cached PDF data)',
+    '  - final_manifestos_dataset.csv     (combined PDFs + CSVs, all 40 manifestos)',
+    '  - preprocessed_manifestos.csv      (cleaned & tokenized text)',
+    '  - preprocessed_manifestos.pkl      (cached preprocessed data)',
+    '  - decade_1940.csv through decade_2020.csv  (9 decade-specific files)',
+    '  - decade_summary.csv               (statistics by decade)',
     '',
-    'Visualizations:',
-    '  - drift_heatmap.png',
-    '  - drift_timeline.png',
-    '  - term_evolution_map.png',
-    '  - topic_heatmap.png',
-    '  - topic_timeline.png',
-    '  - party_topic_comparison.png'
+    'ANALYSIS RESULTS:',
+    '  - semantic_drift_scores.csv        (drift measurements for all terms)',
+    '  - discovered_topics.csv            (LDA topic descriptions)',
+    '  - topic_evolution_by_decade.csv    (topic prominence over time)',
+    '',
+    'VISUALIZATIONS - Semantic Drift:',
+    '  - drift_heatmap.png                (all terms across all decades)',
+    '  - drift_timeline.png               (top 5 drifting terms over time)',
+    '  - term_evolution_map.png           (multi-term 2D PCA comparison)',
+    '  - term_evolution_terrorism.png     (individual evolution map)',
+    '  - term_evolution_tax.png           (individual evolution map)',
+    '  - term_evolution_equality.png      (individual evolution map)',
+    '     ↳ Note: Top 3 drifting terms get individual detailed maps',
+    '',
+    'VISUALIZATIONS - Topic Modeling:',
+    '  - topic_heatmap.png                (topic prominence heatmap across decades)',
+    '  - topic_timeline.png               (topic evolution timeline)',
+    '  - party_topic_comparison.png       (Democrat vs Republican comparison)',
+    ''
 ]
 
 for line in output_files:
     print(line)
 
-print("\n" + "=" * 70)
-print("✓ All analysis complete! Ready for report writing.")
+print("=" * 70)
+print("✓ All analysis complete!")
 print("=" * 70)
