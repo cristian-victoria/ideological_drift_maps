@@ -46,6 +46,17 @@ KEY_IDEOLOGICAL_TERMS = [
 
 print(f"\nTracking {len(KEY_IDEOLOGICAL_TERMS)} key ideological terms")
 
+# Presidential and candidate names to filter out
+NAMES_TO_REMOVE = {
+    'clinton', 'obama', 'trump', 'biden', 'bush', 'reagan', 'ronald',
+    'carter', 'nixon', 'eisenhower', 'kennedy', 'johnson', 'ford',
+    'gore', 'romney', 'mccain', 'kerry', 'dole', 'dukakis', 'mondale',
+    'humphrey', 'goldwater', 'roosevelt', 'truman', 'george', 'donald',
+    'hillary', 'bill', 'barack', 'mitt', 'john', 'al'
+}
+
+print(f"Filtering out {len(NAMES_TO_REMOVE)} presidential/candidate names")
+
 # ============================================================================
 # LOAD DATA
 # ============================================================================
@@ -105,6 +116,9 @@ def tokenize_and_filter(text, remove_stopwords=True):
     
     # Remove very short tokens
     tokens = [token for token in tokens if len(token) > 2]
+    
+    # Remove presidential/candidate names
+    tokens = [token for token in tokens if token not in NAMES_TO_REMOVE]
     
     return tokens
 

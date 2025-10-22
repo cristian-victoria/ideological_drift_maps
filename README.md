@@ -44,6 +44,7 @@ This executes the complete pipeline (~5-8 minutes).
 If you prefer to run steps individually:
 ```bash
 # Step 1: Extract and combine data
+python3 extract_text.py # Extracts text from PDFs
 python3 extract_all_data.py
 
 # Step 2: Preprocess text

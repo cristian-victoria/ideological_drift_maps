@@ -22,7 +22,7 @@ print("=" * 60)
 # ============================================================================
 
 INPUT_FILE = 'preprocessed_manifestos.pkl'
-N_TOPICS = 8  # Number of topics to extract
+N_TOPICS = 6  # Number of topics to extract
 N_TOP_WORDS = 10  # Top words per topic
 DECADES = [1940, 1950, 1960, 1970, 1980, 1990, 2000, 2010, 2020]
 
@@ -47,7 +47,7 @@ documents = df['processed_text'].tolist()
 
 # Create document-term matrix
 vectorizer = CountVectorizer(
-    max_features=1000,  # Keep top 1000 words
+    max_features=2500,  # Keep top 2500 words
     min_df=2,  # Word must appear in at least 2 documents
     max_df=0.8  # Ignore words in more than 80% of documents
 )
@@ -90,25 +90,25 @@ def get_top_words(topic_idx, n_words=10):
     return [feature_names[i] for i in top_word_indices]
 
 def label_topic(words):
-    """Heuristic to label topics based on top words"""
-    words_str = ' '.join(words[:5]).lower()
+    """Improved heuristic to label topics based on top words"""
+    words_str = ' '.join(words).lower()  # Use ALL words, not just top 5
     
-    if any(w in words_str for w in ['security', 'defense', 'military', 'terrorism', 'war']):
-        return 'National Security'
-    elif any(w in words_str for w in ['economy', 'job', 'tax', 'business', 'trade']):
-        return 'Economy & Jobs'
-    elif any(w in words_str for w in ['education', 'school', 'student', 'teacher']):
-        return 'Education'
-    elif any(w in words_str for w in ['healthcare', 'health', 'medical', 'insurance']):
-        return 'Healthcare'
-    elif any(w in words_str for w in ['environment', 'energy', 'climate', 'clean']):
-        return 'Environment & Energy'
-    elif any(w in words_str for w in ['social', 'welfare', 'family', 'child']):
-        return 'Social Policy'
-    elif any(w in words_str for w in ['right', 'freedom', 'justice', 'equality']):
-        return 'Rights & Justice'
-    elif any(w in words_str for w in ['government', 'law', 'reform', 'regulation']):
-        return 'Government & Reform'
+    # Count keyword matches for each category
+    scores = {
+        'National Security': sum(1 for w in ['security', 'defense', 'military', 'terrorism', 'war', 'terrorist', 'armed'] if w in words_str),
+        'Economy & Jobs': sum(1 for w in ['economy', 'job', 'tax', 'business', 'trade', 'economic', 'employment', 'taxpayer'] if w in words_str),
+        'Education': sum(1 for w in ['education', 'school', 'student', 'teacher', 'college', 'university'] if w in words_str),
+        'Healthcare': sum(1 for w in ['healthcare', 'health', 'medical', 'insurance', 'patient', 'hospital'] if w in words_str),
+        'Environment & Energy': sum(1 for w in ['environment', 'energy', 'climate', 'clean', 'environmental', 'renewable', 'pollution'] if w in words_str),
+        'Social Policy': sum(1 for w in ['social', 'welfare', 'family', 'child', 'parent', 'community'] if w in words_str),
+        'Rights & Justice': sum(1 for w in ['right', 'freedom', 'justice', 'equality', 'liberty', 'civil'] if w in words_str),
+        'Government & Reform': sum(1 for w in ['government', 'law', 'reform', 'regulation', 'policy', 'federal'] if w in words_str),
+    }
+    
+    # Get category with highest score
+    max_score = max(scores.values())
+    if max_score >= 2:  # At least 2 keyword matches
+        return max(scores.items(), key=lambda x: x[1])[0]
     else:
         return 'Mixed Policy'
 

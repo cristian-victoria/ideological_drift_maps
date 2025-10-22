@@ -18,6 +18,11 @@ print("\n[1/3] Loading existing PDF data...")
 if os.path.exists('extracted_manifestos.pkl'):
     pdf_df = pd.read_pickle('extracted_manifestos.pkl')
     print(f"Loaded {len(pdf_df)} PDF manifestos")
+    
+    # Add source column if it doesn't exist
+    if 'source' not in pdf_df.columns:
+        pdf_df['source'] = 'PDF'
+    
     manifestos_data.extend(pdf_df.to_dict('records'))
 else:
     print("No PDF data found - run extract_text.py first")
@@ -33,7 +38,6 @@ for i, filepath in enumerate(dem_csvs, 1):
     
     try:
         df = pd.read_csv(filepath)
-        # Concatenate all text rows
         text = ' '.join(df['text'].dropna().astype(str))
         
         year_match = re.search(r'(\d{4})', filename)
@@ -103,7 +107,10 @@ print(f"Total manifestos: {len(df)}")
 print(f"\nBy party:")
 print(df['party'].value_counts())
 print(f"\nBy source:")
-print(df['source'].value_counts())
+if 'source' in df.columns:
+    print(df['source'].value_counts())
+else:
+    print("  (source column not available)")
 print(f"\nBy decade:")
 print(df['decade'].value_counts().sort_index())
 print(f"\nYear range: {df['year'].min()} - {df['year'].max()}")
@@ -116,3 +123,5 @@ df.to_csv(OUTPUT, index=False)
 df.to_pickle(OUTPUT.replace('.csv', '.pkl'))
 print(f"\nSaved as {OUTPUT}")
 print("=" * 60)
+print("\nYOU'RE READY TO START ANALYSIS!")
+print(f"Use '{OUTPUT}' for your temporal text mining")
