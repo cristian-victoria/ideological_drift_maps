@@ -22,7 +22,7 @@ print("=" * 60)
 # ============================================================================
 
 INPUT_FILE = 'preprocessed_manifestos.pkl'
-N_TOPICS = 6  # Number of topics to extract
+N_TOPICS = 4  # Number of topics to extract
 N_TOP_WORDS = 10  # Top words per topic
 DECADES = [1940, 1950, 1960, 1970, 1980, 1990, 2000, 2010, 2020]
 
@@ -42,14 +42,29 @@ print(f"Loaded {len(df)} manifestos")
 
 print("\n[2/6] Preparing documents for topic modeling...")
 
-# Use processed text (already tokenized and cleaned)
 documents = df['processed_text'].tolist()
 
-# Create document-term matrix
+# Define president names to filter
+NAMES_TO_REMOVE = [
+    'clinton', 'obama', 'trump', 'biden', 'bush', 'reagan', 'ronald',
+    'carter', 'nixon', 'eisenhower', 'kennedy', 'johnson', 'ford',
+    'gore', 'romney', 'mccain', 'kerry', 'dole', 'dukakis', 'mondale',
+    'humphrey', 'goldwater', 'roosevelt', 'truman', 'george', 'donald',
+    'hillary', 'bill', 'barack', 'mitt', 'john', 'al'
+]
+
+# Add to your topic modeling script
+GENERIC_STOPWORDS = [
+    'shall', 'will', 'must', 'can', 'may', 'like', 'make', 'get',
+    'current', 'new', 'year', 'time', 'also', 'well', 'way',
+    'tion', 'ment'  # OCR artifacts
+]
+
 vectorizer = CountVectorizer(
-    max_features=2500,  # Keep top 2500 words
-    min_df=2,  # Word must appear in at least 2 documents
-    max_df=0.8  # Ignore words in more than 80% of documents
+    max_features=2500,
+    min_df=3,
+    max_df=0.7,
+    stop_words=NAMES_TO_REMOVE + GENERIC_STOPWORDS
 )
 
 doc_term_matrix = vectorizer.fit_transform(documents)
