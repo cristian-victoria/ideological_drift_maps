@@ -56,7 +56,7 @@ python3 word_embeddings.py
 # Step 4: Topic modeling
 python3 topic_modeling.py
 
-# Step 5: Summary of Visualizations
+# Step 5: Summary of Visualizations (Optional)
 python3 create_summary_visualizations.py
 ```
 
