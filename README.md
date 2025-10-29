@@ -1,7 +1,6 @@
 # Tracing Ideological Drifts in Political Manifestos
 
-**Author:** Cristian Victoria  
-**Course:** CIS 4930  
+**Author:** Cristian Victoria   
 **Date:** 25 November 2025
 
 ## Project Overview
@@ -24,20 +23,12 @@ pip3 install pandas numpy gensim scikit-learn matplotlib seaborn scipy nltk PyPD
 brew install tesseract poppler  # For Mac users
 ```
 
-### System Requirements
-
-- Python 3.8+
-- 2GB+ RAM
-- ~500MB disk space
-
 ## Usage
 
 ### Quick Start (Run Everything)
 ```bash
 python3 run_analysis.py
 ```
-
-This executes the complete pipeline (~5-8 minutes).
 
 ### Step-by-Step Execution
 
@@ -56,7 +47,7 @@ python3 word_embeddings.py
 # Step 4: Topic modeling
 python3 topic_modeling.py
 
-# Step 5: Summary of Visualizations (Optional)
+# Optional Final Step: Summary of Visualizations
 python3 create_summary_visualizations.py
 ```
 
