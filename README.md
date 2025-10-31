@@ -27,7 +27,7 @@ brew install tesseract poppler  # For Mac users
 
 ### Quick Start (Run Everything)
 ```bash
-python3 run_analysis.py
+make # or if you want to run it directly python3 run_analysis.py
 ```
 
 ### Step-by-Step Execution
@@ -54,16 +54,19 @@ python3 create_summary_visualizations.py
 ## Project Structure
 ```
 manifestoData/
-├── manifestos/              # Raw PDF and CSV files
+├── manifestos/                         # Raw PDF and CSV files
 │   ├── democratic/
 │   └── republican/
-├── extract_all_data.py      # Data extraction
-├── preprocess_text.py       # Text preprocessing
-├── word_embeddings.py       # Semantic drift analysis
-├── topic_modeling.py        # Topic evolution analysis
-├── run_analysis.py          # Master pipeline script
-├── README.md                # This file
-└── [output files]           # Generated CSVs and PNGs
+├── Makefile                            # Makefile to ease program interaction 
+├── extract_text.py                     # Text extraction from PDF
+├── extract_all_data.py                 # General data extraction
+├── preprocess_text.py                  # Text preprocessing
+├── word_embeddings.py                  # Semantic drift analysis
+├── topic_modeling.py                   # Topic evolution analysis
+├── run_analysis.py                     # Master pipeline script
+├── README.md                           # This file
+├── create_summary_visualiaztions.py    # Visualization summary
+└── [output files]                      # Generated CSVs and PNGs
 ```
 
 ## Methodology

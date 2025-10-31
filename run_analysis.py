@@ -19,7 +19,7 @@ STEPS = [
         'name': 'PDF Text Extraction (OCR)',
         'script': 'extract_text.py',
         'duration_est': '2-3 minutes',
-        'optional': True  # Skip if already done
+        'optional': True  # Change to True to skip if already done
     },
     {
         'name': 'Data Combination (PDFs + CSVs)',
