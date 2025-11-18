@@ -1,7 +1,6 @@
 """
-PDF Text Extraction Script with OCR Support
-Extracts text from manifesto PDFs (including scanned images)
-Author: Cristian Victoria
+PDF Text Extraction (OCR) Script
+Extracts text from manifesto PDF scanned images
 """
 
 import os
@@ -10,11 +9,9 @@ import re
 from pdf2image import convert_from_path
 import pytesseract
 
-print("=" * 60)
-print("PDF TEXT EXTRACTION SCRIPT (WITH OCR)")
-print("=" * 60)
-
-# Configuration
+# =====================================
+# CONFIGURATION
+# =====================================
 MANIFESTO_DIR = 'manifestos'
 OUTPUT_FILE = 'extracted_manifestos.csv'
 
@@ -25,24 +22,24 @@ def extract_text_from_pdf_ocr(pdf_path):
     try:
         print("      Converting to images...", end=" ")
         images = convert_from_path(pdf_path, dpi=300)
-        print(f"✓ ({len(images)} pages)")
+        print(f"Done. ({len(images)} pages)")
         
         text = ""
         for i, image in enumerate(images, 1):
             print(f"      OCR page {i}/{len(images)}...", end=" ")
             page_text = pytesseract.image_to_string(image)
             text += page_text + "\n"
-            print("✓")
+            print("Done.")
         
         return text.strip()
     except Exception as e:
-        print(f"✗ ERROR: {e}")
+        print(f"ERROR: {e}")
         return ""
 
-# ============================================================================
+# =====================================
 # PROCESS DEMOCRATIC PARTY
-# ============================================================================
-print("\n[1/2] Processing Democratic Party manifestos...")
+# =====================================
+print("\n[1/3] Processing Democratic Party manifestos...")
 dem_dir = os.path.join(MANIFESTO_DIR, 'democratic')
 
 if os.path.exists(dem_dir):
@@ -69,12 +66,12 @@ if os.path.exists(dem_dir):
             'word_count': len(text.split())
         })
         
-        print(f"      ✓ Complete! ({len(text.split())} words)\n")
+        print(f"      Complete! ({len(text.split())} words)\n")
 
-# ============================================================================
+# =====================================
 # PROCESS REPUBLICAN PARTY
-# ============================================================================
-print("\n[2/2] Processing Republican Party manifestos...")
+# =====================================
+print("\n[2/3] Processing Republican Party manifestos...")
 rep_dir = os.path.join(MANIFESTO_DIR, 'republican')
 
 if os.path.exists(rep_dir):
@@ -101,18 +98,17 @@ if os.path.exists(rep_dir):
             'word_count': len(text.split())
         })
         
-        print(f"      ✓ Complete! ({len(text.split())} words)\n")
+        print(f"      Complete! ({len(text.split())} words)\n")
 
-# ============================================================================
+# =====================================
 # CREATE FINAL DATASET
-# ============================================================================
+# =====================================
 print("\n[3/3] Creating dataset...")
 df = pd.DataFrame(manifestos_data)
 df = df.sort_values('year')
 
-print("\n" + "=" * 60)
 print("EXTRACTION COMPLETED!")
-print("=" * 60)
+print("-" * 60)
 print(f"Total manifestos: {len(df)}")
 print(f"\nBy party:")
 print(df['party'].value_counts())
@@ -125,9 +121,6 @@ print(f"\nTotal words: {df['word_count'].sum():,}")
 print(f"\nSaving to {OUTPUT_FILE}...")
 df.to_csv(OUTPUT_FILE, index=False)
 df.to_pickle(OUTPUT_FILE.replace('.csv', '.pkl'))
-print("✓ Saved!")
-print(f"✓ Also saved as {OUTPUT_FILE.replace('.csv', '.pkl')}")
+print(f"Also saved as {OUTPUT_FILE.replace('.csv', '.pkl')}")
 
-print("\n" + "=" * 60)
-print("✓ Ready!")
-print("=" * 60)
+print("\nAll done!")

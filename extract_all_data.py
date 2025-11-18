@@ -1,15 +1,11 @@
 """
-Combined extraction: PDFs (already done) + CSVs
-Author: Cristian Victoria
+Data Combination Script
+Extracts CSV data and combines it with PDF data into a single manifesto dataset
 """
 import os
 import pandas as pd
 import re
 import glob
-
-print("=" * 60)
-print("COMBINING PDF + CSV DATA")
-print("=" * 60)
 
 manifestos_data = []
 
@@ -92,7 +88,6 @@ for i, filepath in enumerate(rep_csvs, 1):
         print(f"ERROR: {e}")
 
 # Create final dataset
-print("\n" + "=" * 60)
 print("Creating final combined dataset...")
 df = pd.DataFrame(manifestos_data)
 df = df.sort_values('year')
@@ -100,9 +95,8 @@ df = df.sort_values('year')
 # Filter out empty ones
 df = df[df['word_count'] > 100]
 
-print("\n" + "=" * 60)
 print("FINAL DATASET READY!")
-print("=" * 60)
+print("-" * 60)
 print(f"Total manifestos: {len(df)}")
 print(f"\nBy party:")
 print(df['party'].value_counts())
@@ -121,7 +115,4 @@ print(f"Average words: {df['word_count'].mean():.0f}")
 OUTPUT = 'final_manifestos_dataset.csv'
 df.to_csv(OUTPUT, index=False)
 df.to_pickle(OUTPUT.replace('.csv', '.pkl'))
-print(f"\nSaved as {OUTPUT}")
-print("=" * 60)
-print("\nYOU'RE READY TO START ANALYSIS!")
-print(f"Use '{OUTPUT}' for your temporal text mining")
+print(f"\nSaved as {OUTPUT} for temporal text mining")

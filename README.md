@@ -13,7 +13,6 @@ This project uses temporal text mining techniques to detect and quantify ideolog
 - **Scope:** United States (1948-2024)
 - **Parties:** Democratic Party (20 manifestos), Republican Party (20 manifestos)
 - **Total Words:** 888,566 words
-- **Coverage:** 9 decades (1940s-2020s)
 
 ## Installation
 
@@ -27,28 +26,27 @@ brew install tesseract poppler  # For Mac users
 
 ### Quick Start (Run Everything)
 ```bash
-make # or if you want to run it directly python3 run_analysis.py
+make # or if you want to run it directly: `python3 run_analysis.py`
 ```
 
 ### Step-by-Step Execution
 
 If you prefer to run steps individually:
 ```bash
-# Step 1: Extract and combine data
-python3 extract_text.py # Extracts text from PDFs
+# Step 1: Extract text from scanned images
+python3 extract_text.py 
+
+# Step 2: Combine PDF and CSV data
 python3 extract_all_data.py
 
-# Step 2: Preprocess text
+# Step 3: Preprocess text
 python3 preprocess_text.py
 
-# Step 3: Word embedding analysis
+# Step 4: Word embedding analysis
 python3 word_embeddings.py
 
-# Step 4: Topic modeling
+# Step 5: Topic modeling
 python3 topic_modeling.py
-
-# Optional Final Step: Summary of Visualizations
-python3 create_summary_visualizations.py
 ```
 
 ## Project Structure
@@ -57,15 +55,14 @@ manifestoData/
 ├── manifestos/                         # Raw PDF and CSV files
 │   ├── democratic/
 │   └── republican/
-├── Makefile                            # Makefile to ease program interaction 
-├── extract_text.py                     # Text extraction from PDF
-├── extract_all_data.py                 # General data extraction
-├── preprocess_text.py                  # Text preprocessing
-├── word_embeddings.py                  # Semantic drift analysis
-├── topic_modeling.py                   # Topic evolution analysis
+├── extract_all_data.py                 # Step 2: General data combination
+├── extract_text.py                     # Step 1: Text extraction from PDF
+├── Makefile                            # Makefile to ease interaction
+├── preprocess_text.py                  # Step 3: Text preprocessing
+├── README.md                           # THIS FILE
 ├── run_analysis.py                     # Master pipeline script
-├── README.md                           # This file
-├── create_summary_visualiaztions.py    # Visualization summary
+├── topic_modeling.py                   # Step 5: Topic evolution analysis
+├── word_embeddings.py                  # Step 4: Semantic drift analysis
 └── [output files]                      # Generated CSVs and PNGs
 ```
 
@@ -86,44 +83,29 @@ manifestoData/
 - Track topic prominence over time
 - Compare party differences
 
-## Key Results
-
-### Top Semantic Drift Terms
-
-1. **Terrorism** (0.217) - Emerged post-9/11
-2. **Tax** (0.216) - Major shifts during Reagan era
-3. **Equality** (0.188) - Post-WWII civil rights evolution
-
-### Discovered Topics
-
-- Economy & Jobs
-- National Security
-- Environment & Energy
-- Social Policy
-- Healthcare
-- Education
-- Rights & Justice
-- Government Reform
-
 ## Output Files
 
 ### Data Files
-- `final_manifestos_dataset.csv` - Combined extracted text
-- `preprocessed_manifestos.csv` - Cleaned and tokenized data
 - `decade_*.csv` - Data split by decade
+- `extracted_manifestos.csv` - Data from image pdf to readable text
+- `extracted_manifestos.pkl` - Data from image pdf to readable text - used for combined data set
+- `final_manifestos_dataset.csv` - Combined extracted text
+- `final_manifestos_dataset.pkl` - Combined extracted text - used for processing
+- `preprocessed_manifestos.csv` - Cleaned and tokenized data
+- `preprocessed_manifestos.pkl` - Combined extracted text - used to train models
 
 ### Analysis Results
-- `semantic_drift_scores.csv` - Drift measurements
 - `discovered_topics.csv` - Topic descriptions
+- `semantic_drift_scores.csv` - Drift measurements
 - `topic_evolution_by_decade.csv` - Topic trends
 
 ### Visualizations
 - `drift_heatmap.png` - Semantic drift across decades
 - `drift_timeline.png` - Top drifting terms over time
-- `term_evolution_map.png` - 2D term evolution
+- `party_topic_comparison.png` - Party differences
+- `term_evolution_*.png` - 2D term evolution
 - `topic_heatmap.png` - Topic prominence heatmap
 - `topic_timeline.png` - Topic evolution timeline
-- `party_topic_comparison.png` - Party differences
 
 ## References
 

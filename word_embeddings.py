@@ -1,7 +1,6 @@
 """
-Word Embedding Alignment for Semantic Drift Detection
+Word Embedding Alignment for Semantic Drift Detection Script
 Trains embeddings per decade and tracks term movement
-Author: Cristian Victoria
 """
 
 import pandas as pd
@@ -14,13 +13,7 @@ from scipy.spatial.distance import cosine
 import warnings
 warnings.filterwarnings('ignore')
 
-print("=" * 60)
-print("WORD EMBEDDING & SEMANTIC DRIFT ANALYSIS")
-print("=" * 60)
-
-# ============================================================================
-# CONFIGURATION
-# ============================================================================
+# Configuration
 
 INPUT_FILE = 'preprocessed_manifestos.pkl'
 
@@ -43,18 +36,16 @@ EPOCHS = 10
 
 print(f"\nTracking {len(KEY_TERMS)} key terms across {len(DECADES)} decades")
 
-# ============================================================================
+# =====================================
 # LOAD DATA
-# ============================================================================
-
+# =====================================
 print("\n[1/5] Loading preprocessed data...")
 df = pd.read_pickle(INPUT_FILE)
 print(f"Loaded {len(df)} manifestos")
 
-# ============================================================================
+# =====================================
 # TRAIN EMBEDDINGS PER DECADE
-# ============================================================================
-
+# =====================================
 print("\n[2/5] Training Word2Vec embeddings for each decade...")
 
 decade_models = {}
@@ -89,10 +80,9 @@ for decade in DECADES:
 
 print(f"Trained {len(decade_models)} decade models")
 
-# ============================================================================
+# =====================================
 # COMPUTE SEMANTIC DRIFT SCORES
-# ============================================================================
-
+# =====================================
 print("\n[3/5] Computing semantic drift scores...")
 
 drift_results = []
@@ -128,16 +118,15 @@ for i in range(len(decade_list) - 1):
             })
             
             if drift_score > 0.3:  # Highlight significant drifts
-                print(f"    {term:15s}: drift = {drift_score:.3f} ⚠️")
+                print(f"    {term:15s}: drift = {drift_score:.3f}")
         else:
-            print(f"    {term:15s}: not in both vocabularies ⊗")
+            print(f"    {term:15s}: not in both vocabularies")
 
 drift_df = pd.DataFrame(drift_results)
 
-# ============================================================================
+# =====================================
 # IDENTIFY TOP DRIFTING TERMS
-# ============================================================================
-
+# =====================================
 print("\n[4/5] Identifying terms with largest semantic drift...")
 
 # Average drift per term across all time periods
@@ -152,10 +141,9 @@ for i, (term, drift) in enumerate(term_avg_drift.head(10).items(), 1):
 drift_df.to_csv('semantic_drift_scores.csv', index=False)
 print("\nSaved semantic_drift_scores.csv")
 
-# ============================================================================
+# =====================================
 # VISUALIZATIONS
-# ============================================================================
-
+# =====================================
 print("\n[5/5] Creating visualizations...")
 
 # Visualization 1: Drift heatmap
@@ -340,26 +328,13 @@ if len(eligible_terms) > 0:
 else:
     print("  Warning: Not enough terms with sufficient decade coverage for visualization")
 
-# ============================================================================
+# =====================================
 # SUMMARY STATISTICS
-# ============================================================================
-
-print("\n" + "=" * 60)
+# =====================================
 print("SEMANTIC DRIFT ANALYSIS COMPLETE!")
-print("=" * 60)
 
 print(f"\nTotal drift measurements: {len(drift_df)}")
 print(f"Average drift score: {drift_df['drift_score'].mean():.4f}")
 print(f"Max drift observed: {drift_df['drift_score'].max():.4f}")
 print(f"  Term: {drift_df.loc[drift_df['drift_score'].idxmax(), 'term']}")
 print(f"  Period: {drift_df.loc[drift_df['drift_score'].idxmax(), 'decade1']}s → {drift_df.loc[drift_df['drift_score'].idxmax(), 'decade2']}s")
-
-print("\n" + "=" * 60)
-print("FILES CREATED:")
-print("=" * 60)
-print("1. semantic_drift_scores.csv - All drift measurements")
-print("2. drift_heatmap.png - Visual heatmap of term drift")
-print("3. drift_timeline.png - Timeline of top drifting terms")
-print("4. term_evolution_map.png - 2D projection comparing multiple terms")
-print("5. term_evolution_<term>.png - Individual evolution maps for top 3 terms")
-print("\n" + "=" * 60)

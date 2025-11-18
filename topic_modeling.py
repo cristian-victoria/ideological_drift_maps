@@ -13,13 +13,9 @@ import seaborn as sns
 import warnings
 warnings.filterwarnings('ignore')
 
-print("=" * 60)
-print("TOPIC MODELING ANALYSIS")
-print("=" * 60)
-
-# ============================================================================
+# =====================
 # CONFIGURATION
-# ============================================================================
+# =====================
 
 INPUT_FILE = 'preprocessed_manifestos.pkl'
 N_TOPICS = 4  # Number of topics to extract (optimized for 40 documents)
@@ -28,17 +24,17 @@ DECADES = [1940, 1950, 1960, 1970, 1980, 1990, 2000, 2010, 2020]
 
 print(f"\nExtracting {N_TOPICS} topics with top {N_TOP_WORDS} words each")
 
-# ============================================================================
+# =====================
 # LOAD DATA
-# ============================================================================
+# =====================
 
 print("\n[1/6] Loading preprocessed data...")
 df = pd.read_pickle(INPUT_FILE)
 print(f"Loaded {len(df)} manifestos")
 
-# ============================================================================
+# =====================
 # PREPARE DATA FOR LDA
-# ============================================================================
+# =====================
 
 print("\n[2/6] Preparing documents for topic modeling...")
 
@@ -367,10 +363,6 @@ plt.close()
 # SUMMARY STATISTICS
 # ============================================================================
 
-print("\n" + "=" * 60)
-print("TOPIC MODELING COMPLETE!")
-print("=" * 60)
-
 print(f"\nNumber of topics: {N_TOPICS}")
 print(f"Documents analyzed: {len(df)}")
 print(f"Vocabulary size: {len(feature_names)}")
@@ -388,15 +380,4 @@ for i, (topic, avg) in enumerate(sorted(topic_avg_prominence.items(),
                                        key=lambda x: x[1], reverse=True), 1):
     print(f"{i}. {topic:30s}: {avg:.4f}")
 
-print("\n" + "=" * 60)
-print("FILES CREATED:")
-print("=" * 60)
-print("1. discovered_topics.csv - Topic descriptions")
-print("2. topic_evolution_by_decade.csv - Topic prominence by decade")
-print("3. topic_heatmap.png - Heatmap of topics across time")
-print("4. topic_timeline.png - Line plot of topic evolution")
-print("5. party_topic_comparison.png - Party differences on top topics")
-
-print("\n" + "=" * 60)
 print("TOPIC MODELING COMPLETE!")
-print("=" * 60)

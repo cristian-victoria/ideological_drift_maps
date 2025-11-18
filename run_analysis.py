@@ -1,7 +1,6 @@
 """
-Master Script - Runs Complete Analysis Pipeline
+Master Script
 Executes all steps from data extraction to visualization
-Author: Cristian Victoria
 """
 
 import subprocess
@@ -53,7 +52,6 @@ for i, step in enumerate(STEPS, 1):
     print(f"  {i}. {step['name']} (~{step['duration_est']}){optional_tag}")
 
 print("\nEstimated total time: 6-11 minutes")
-print("=" * 70)
 
 input("\nPress ENTER to start the analysis pipeline...")
 
@@ -90,15 +88,15 @@ for i, step in enumerate(STEPS, 1):
         step_duration = step_end - step_start
         step_times.append(step_duration)
         
-        print(f"\n✓ Step {i} completed in {step_duration:.1f} seconds")
+        print(f"\nStep {i} completed in {step_duration:.1f} seconds")
         
     except subprocess.CalledProcessError as e:
-        print(f"\n✗ ERROR in Step {i}: {step['name']}")
+        print(f"\nERROR in Step {i}: {step['name']}")
         print(f"Script: {step['script']}")
         print("Please check the error messages above and fix before continuing.")
         exit(1)
     except FileNotFoundError:
-        print(f"\n✗ ERROR: Script not found: {step['script']}")
+        print(f"\nERROR: Script not found: {step['script']}")
         print("Please ensure all scripts are in the current directory.")
         exit(1)
 
@@ -118,46 +116,4 @@ for i, (step, duration) in enumerate(zip(STEPS, step_times), 1):
     else:
         print(f"  {i}. {step['name']:40s}: (skipped)")
 
-print("\n" + "=" * 70)
-print("OUTPUT FILES CREATED:")
-print("=" * 70)
-
-# List all output files organized by category
-output_files = [
-    '',
-    'DATA FILES:',
-    '  - extracted_manifestos.csv         (text from PDF manifestos)',
-    '  - extracted_manifestos.pkl         (cached PDF data)',
-    '  - final_manifestos_dataset.csv     (combined PDFs + CSVs, all 40 manifestos)',
-    '  - preprocessed_manifestos.csv      (cleaned & tokenized text)',
-    '  - preprocessed_manifestos.pkl      (cached preprocessed data)',
-    '  - decade_1940.csv through decade_2020.csv  (9 decade-specific files)',
-    '  - decade_summary.csv               (statistics by decade)',
-    '',
-    'ANALYSIS RESULTS:',
-    '  - semantic_drift_scores.csv        (drift measurements for all terms)',
-    '  - discovered_topics.csv            (LDA topic descriptions)',
-    '  - topic_evolution_by_decade.csv    (topic prominence over time)',
-    '',
-    'VISUALIZATIONS - Semantic Drift:',
-    '  - drift_heatmap.png                (all terms across all decades)',
-    '  - drift_timeline.png               (top 5 drifting terms over time)',
-    '  - term_evolution_map.png           (multi-term 2D PCA comparison)',
-    '  - term_evolution_terrorism.png     (individual evolution map)',
-    '  - term_evolution_tax.png           (individual evolution map)',
-    '  - term_evolution_equality.png      (individual evolution map)',
-    '     ↳ Note: Top 3 drifting terms get individual detailed maps',
-    '',
-    'VISUALIZATIONS - Topic Modeling:',
-    '  - topic_heatmap.png                (topic prominence heatmap across decades)',
-    '  - topic_timeline.png               (topic evolution timeline)',
-    '  - party_topic_comparison.png       (Democrat vs Republican comparison)',
-    ''
-]
-
-for line in output_files:
-    print(line)
-
-print("=" * 70)
-print("✓ All analysis complete!")
-print("=" * 70)
+print("\nAll analysis complete!\n")
