@@ -79,7 +79,7 @@ manifestoData/
 - Track 19 key ideological terms
 
 ### 3. Dynamic Topic Modeling
-- Latent Dirichlet Allocation (8 topics)
+- Latent Dirichlet Allocation (4 topics)
 - Track topic prominence over time
 - Compare party differences
 
