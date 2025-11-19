@@ -13,7 +13,6 @@ MAIN_SCRIPT = run_analysis.py
 
 # Data files to clean
 DATA_FILES = decade_*.csv \
-			decade_summary.csv \
 			extracted_manifestos.csv \
 			extracted_manifestos.pkl \
 			final_manifestos_dataset.csv \
@@ -30,13 +29,10 @@ RESULT_FILES = discovered_topics.csv \
 # Visualization files
 VIZ_FILES = drift_heatmap.png \
             drift_timeline.png \
-            term_evolution_map.png \
+            term_evolution_*.png \
             topic_heatmap.png \
             topic_timeline.png \
             party_topic_comparison.png \
-            summary_visualization.png \
-            summary_visualization_highres.png \
-            key_findings_slide.png
 
 # Default target - runs the full pipeline
 .PHONY: all

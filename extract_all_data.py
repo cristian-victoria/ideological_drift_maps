@@ -7,10 +7,12 @@ import pandas as pd
 import re
 import glob
 
+# Configuration
 manifestos_data = []
+OUTPUT_FILE = 'final_manifestos_dataset.csv'
 
 # Load existing PDF extractions
-print("\n[1/3] Loading existing PDF data...")
+print("\n[1/4] Loading existing PDF data...")
 if os.path.exists('extracted_manifestos.pkl'):
     pdf_df = pd.read_pickle('extracted_manifestos.pkl')
     print(f"Loaded {len(pdf_df)} PDF manifestos")
@@ -24,7 +26,7 @@ else:
     print("No PDF data found - run extract_text.py first")
 
 # Process Democratic CSVs
-print("\n[2/3] Processing Democratic CSV files...")
+print("\n[2/4] Processing Democratic CSV files...")
 dem_csvs = sorted(glob.glob('manifestos/democratic/*.csv'))
 print(f"Found {len(dem_csvs)} CSV files")
 
@@ -56,7 +58,7 @@ for i, filepath in enumerate(dem_csvs, 1):
         print(f"ERROR: {e}")
 
 # Process Republican CSVs
-print("\n[3/3] Processing Republican CSV files...")
+print("\n[3/4] Processing Republican CSV files...")
 rep_csvs = sorted(glob.glob('manifestos/republican/*.csv'))
 print(f"Found {len(rep_csvs)} CSV files")
 
@@ -88,14 +90,14 @@ for i, filepath in enumerate(rep_csvs, 1):
         print(f"ERROR: {e}")
 
 # Create final dataset
-print("Creating final combined dataset...")
+print("\n[4/4] Creating final combined dataset...")
 df = pd.DataFrame(manifestos_data)
 df = df.sort_values('year')
 
 # Filter out empty ones
 df = df[df['word_count'] > 100]
 
-print("FINAL DATASET READY!")
+print("\nFINAL DATASET COMPLETE:")
 print("-" * 60)
 print(f"Total manifestos: {len(df)}")
 print(f"\nBy party:")
@@ -112,7 +114,7 @@ print(f"\nTotal words: {df['word_count'].sum():,}")
 print(f"Average words: {df['word_count'].mean():.0f}")
 
 # Save final dataset
-OUTPUT = 'final_manifestos_dataset.csv'
-df.to_csv(OUTPUT, index=False)
-df.to_pickle(OUTPUT.replace('.csv', '.pkl'))
-print(f"\nSaved as {OUTPUT} for temporal text mining")
+print(f"\nSaving to {OUTPUT_FILE}...")
+df.to_csv(OUTPUT_FILE, index=False)
+df.to_pickle(OUTPUT_FILE.replace('.csv', '.pkl'))
+print(f"Also saved as {OUTPUT_FILE.replace('.csv', '.pkl')}")

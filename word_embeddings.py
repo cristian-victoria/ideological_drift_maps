@@ -13,7 +13,9 @@ from scipy.spatial.distance import cosine
 import warnings
 warnings.filterwarnings('ignore')
 
-# Configuration
+# =====================
+# CONFIGURATION
+# =====================
 
 INPUT_FILE = 'preprocessed_manifestos.pkl'
 
@@ -184,11 +186,24 @@ print("  Creating drift timeline...")
 top_terms = term_avg_drift.head(5).index.tolist()
 
 plt.figure(figsize=(12, 6))
+
+# Create a sorted list of all unique decade transitions
+all_transitions = drift_df[['decade1', 'decade2']].drop_duplicates()
+all_transitions = all_transitions.sort_values(['decade1', 'decade2'])
+sorted_transitions = [f"{int(row['decade1'])}-{int(row['decade2'])}" 
+                      for _, row in all_transitions.iterrows()]
+
 for term in top_terms:
     term_data = drift_df[drift_df['term'] == term]
-    x = [f"{row['decade1']}-{row['decade2']}" for _, row in term_data.iterrows()]
-    y = term_data['drift_score'].values
-    plt.plot(x, y, marker='o', linewidth=2, label=term, markersize=8)
+    
+    # Create a dictionary mapping transition to drift score
+    transition_dict = {f"{int(row['decade1'])}-{int(row['decade2'])}": row['drift_score']
+                       for _, row in term_data.iterrows()}
+    
+    # Get y values in the correct order (use NaN if transition doesn't exist for this term)
+    y = [transition_dict.get(trans, np.nan) for trans in sorted_transitions]
+    
+    plt.plot(sorted_transitions, y, marker='o', linewidth=2, label=term, markersize=8)
 
 plt.xlabel('Decade Transition', fontsize=12)
 plt.ylabel('Drift Score', fontsize=12)
@@ -201,7 +216,7 @@ plt.savefig('drift_timeline.png', dpi=300, bbox_inches='tight')
 print("  Saved drift_timeline.png")
 plt.close()
 
-# Visualization 3: 2D projection of term evolution (IMPROVED - SHOWS MULTIPLE TERMS)
+# Visualization 3: 2D projection of term evolution
 print("  Creating term evolution map...")
 
 # Select top N terms with highest drift that appear in most decades
@@ -282,7 +297,7 @@ if len(eligible_terms) > 0:
     print("  Saved term_evolution_map.png")
     plt.close()
     
-    # BONUS: Create individual evolution maps for each top term
+    # Create individual evolution maps for each top term
     print("  Creating individual term evolution maps...")
     
     for term in eligible_terms[:3]:  # Top 3 terms
@@ -331,7 +346,8 @@ else:
 # =====================================
 # SUMMARY STATISTICS
 # =====================================
-print("SEMANTIC DRIFT ANALYSIS COMPLETE!")
+print("\nSEMANTIC DRIFT ANALYSIS COMPLETE:")
+print("-" * 60)
 
 print(f"\nTotal drift measurements: {len(drift_df)}")
 print(f"Average drift score: {drift_df['drift_score'].mean():.4f}")

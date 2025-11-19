@@ -23,7 +23,7 @@ STEPS = [
     {
         'name': 'Data Combination (PDFs + CSVs)',
         'script': 'extract_all_data.py',
-        'duration_est': '1-2 minutes',
+        'duration_est': '30-60 seconds',
         'optional': False
     },
     {
@@ -35,13 +35,13 @@ STEPS = [
     {
         'name': 'Word Embedding Analysis',
         'script': 'word_embeddings.py',
-        'duration_est': '2-3 minutes',
+        'duration_est': '30-60 seconds',
         'optional': False
     },
     {
         'name': 'Topic Modeling',
         'script': 'topic_modeling.py',
-        'duration_est': '1-2 minutes',
+        'duration_est': '30-60 seconds',
         'optional': False
     }
 ]
@@ -51,7 +51,7 @@ for i, step in enumerate(STEPS, 1):
     optional_tag = " (will skip if already done)" if step.get('optional') else ""
     print(f"  {i}. {step['name']} (~{step['duration_est']}){optional_tag}")
 
-print("\nEstimated total time: 6-11 minutes")
+print("\nEstimated total time: 4-8 minutes")
 
 input("\nPress ENTER to start the analysis pipeline...")
 

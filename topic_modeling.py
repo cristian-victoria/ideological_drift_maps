@@ -187,9 +187,6 @@ def label_topic(words):
         else:
             return 'Mixed Policy'
 
-print("\nDiscovered Topics:")
-print("-" * 60)
-
 topic_labels = []
 topic_details = []
 
@@ -363,6 +360,9 @@ plt.close()
 # SUMMARY STATISTICS
 # ============================================================================
 
+print("\nTOPIC MODELING COMPLETE:")
+print("-" * 60)
+
 print(f"\nNumber of topics: {N_TOPICS}")
 print(f"Documents analyzed: {len(df)}")
 print(f"Vocabulary size: {len(feature_names)}")
@@ -379,5 +379,3 @@ for topic_label in unique_topic_labels:
 for i, (topic, avg) in enumerate(sorted(topic_avg_prominence.items(), 
                                        key=lambda x: x[1], reverse=True), 1):
     print(f"{i}. {topic:30s}: {avg:.4f}")
-
-print("TOPIC MODELING COMPLETE!")

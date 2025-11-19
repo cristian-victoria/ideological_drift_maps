@@ -103,11 +103,11 @@ if os.path.exists(rep_dir):
 # =====================================
 # CREATE FINAL DATASET
 # =====================================
-print("\n[3/3] Creating dataset...")
+print("[3/3] Creating dataset...")
 df = pd.DataFrame(manifestos_data)
 df = df.sort_values('year')
 
-print("EXTRACTION COMPLETED!")
+print("\nPDF EXTRACTION COMPLETE:")
 print("-" * 60)
 print(f"Total manifestos: {len(df)}")
 print(f"\nBy party:")
@@ -122,5 +122,3 @@ print(f"\nSaving to {OUTPUT_FILE}...")
 df.to_csv(OUTPUT_FILE, index=False)
 df.to_pickle(OUTPUT_FILE.replace('.csv', '.pkl'))
 print(f"Also saved as {OUTPUT_FILE.replace('.csv', '.pkl')}")
-
-print("\nAll done!")

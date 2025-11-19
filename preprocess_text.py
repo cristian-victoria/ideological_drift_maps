@@ -192,22 +192,16 @@ for decade, group in decade_groups:
 # SAVE RESULTS
 # =================================
 
-print("SAVING PREPROCESSED DATA...")
-
-# Save full preprocessed dataset
+print(f"\nSaving to {OUTPUT_FILE}...")
 df.to_csv(OUTPUT_FILE, index=False)
 df.to_pickle(OUTPUT_FILE.replace('.csv', '.pkl'))
-print(f"Saved {OUTPUT_FILE}")
-
-# Save decade summary
-decade_df = pd.DataFrame(decade_summary)
-decade_df.to_csv('decade_summary.csv', index=False)
-print("Saved decade_summary.csv")
+print(f"Also saved as {OUTPUT_FILE.replace('.csv', '.pkl')}")
 
 # =================================
 # SUMMARY STATISTICS
 # =================================
-print("RESULT SUMMARY:")
+print("\nPREPROCESSING COMPLETE:")
+print("-" * 60)
 
 print(f"\nTotal manifestos processed: {len(df)}")
 print(f"Total tokens: {df['token_count'].sum():,}")
@@ -224,11 +218,6 @@ party_stats = df.groupby('party').agg({
 print(party_stats)
 
 print("\n" + "-" * 60)
-print("TOKENS BY DECADE:")
-print("-" * 60)
-print(decade_df.to_string(index=False))
-
-print("\n" + "-" * 60)
 print("TOP 10 MOST FREQUENT KEY TERMS (across all manifestos):")
 print("-" * 60)
 term_counts = []
@@ -239,5 +228,3 @@ for term in KEY_IDEOLOGICAL_TERMS:
 term_counts.sort(key=lambda x: x[1], reverse=True)
 for i, (term, count) in enumerate(term_counts[:10], 1):
     print(f"{i:2d}. {term:15s} : {count:5d} occurrences")
-
-print("Preprocessing complete and ready for analysis!")
