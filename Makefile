@@ -58,7 +58,7 @@ clean:
 
 # Clean only output files, keep extracted data
 .PHONY: clean-visualizations
-clean-output:
+clean-visualizations:
 	@echo "Cleaning visualization files only (keeping extracted data)..."
 	@rm -f $(VIZ_FILES)
 	@echo "Output files cleaned!"
